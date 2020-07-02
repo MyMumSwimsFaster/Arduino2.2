@@ -1,0 +1,129 @@
+/*
+
+  The circuit:
+ * LCD RS pin to digital pin 12
+ * LCD Enable pin to digital pin 11
+ * LCD D4 pin to digital pin 5
+ * LCD D5 pin to digital pin 4
+ * LCD D6 pin to digital pin 3
+ * LCD D7 pin to digital pin 2
+ * RGB Strip In to digital pin 1
+ * LCD R/W pin to ground
+ * LCD VSS pin to ground
+ * LCD VCC pin to 5V
+ * RGB power to 5v
+ * RGB Ground to GND
+ * 10K resistor:
+ * ends to +5V and ground
+ * wiper to LCD VO pin (pin 3)
+
+ */
+
+// include the library code:
+#include <LiquidCrystal.h>
+#include <Adafruit_NeoPixel.h>
+
+#define PIN 1	 // input pin Neopixel is attached to
+#define NUMPIXELS 24 // number of neopixels in strip
+
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+
+int delayval = 50; // timing delay in milliseconds
+
+int redColor = 0;
+int greenColor = 0;
+int blueColor = 0;
+
+// initialize the library with the numbers of the interface pins
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+// set pin numbers:
+const int buttonPin = 6;    // the number of the pushbutton pin
+
+// Variables will change:
+int onOff = HIGH;
+int buttonState;             // the current reading from the input pin
+int lastButtonState = LOW;   // the previous reading from the input pin
+
+// the following variables are unsigned long's because the time, measured in miliseconds,
+// will quickly become a bigger number than can be stored in an int.
+unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
+unsigned long debounceDelay = 50;    // the debounce time; increase if the output flickers
+
+
+void setup() {
+  
+  pinMode(buttonPin, INPUT);
+  // Initialize the NeoPixel library.
+  pixels.begin();
+  // set up the LCD's number of columns and rows:
+  lcd.begin(16, 2);
+  // Print a message to the LCD.
+  lcd.print("Sekunden:");
+}
+
+void loop() {
+
+    // read the state of the switch into a local variable:
+    int reading = digitalRead(buttonPin);
+
+    // check to see if you just pressed the button
+    // (i.e. the input went from LOW to HIGH),  and you've waited
+    // long enough since the last press to ignore any noise:
+
+    // If the switch changed, due to noise or pressing:
+    if (reading != lastButtonState) {
+      // reset the debouncing timer
+      lastDebounceTime = millis();
+    }
+
+    if ((millis() - lastDebounceTime) > debounceDelay) {
+      // whatever the reading is at, it's been there for longer
+      // than the debounce delay, so take it as the actual current state:
+
+      // if the button state has changed:
+      if (reading != buttonState) {
+        buttonState = reading;
+
+        // only toggle the LED if the new button state is HIGH
+        if (buttonState == HIGH) {
+          onOff = !onOff;
+        }
+      }
+    }
+  
+    // save the reading.  Next time through the loop,
+    // it'll be the lastButtonState:
+    lastButtonState = reading;
+  
+ 	if(onOff == HIGH){
+      // set the cursor to column 0, line 1
+      // (note: line 1 is the second row, since counting begins with 0):
+      lcd.setCursor(0, 1);
+      // print the number of seconds since reset:
+      lcd.print(millis() / 1000);
+
+
+      setColor();
+
+      for (int i=0; i < NUMPIXELS; i++) {
+        // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+        pixels.setPixelColor(i, pixels.Color(redColor, greenColor, blueColor));
+
+        // This sends the updated pixel color to the hardware.
+        pixels.show();
+
+        // Delay for a period of time (in milliseconds).
+        delay(delayval);
+      }
+    }
+}
+ 
+
+// setColor()
+// picks random values to set for RGB
+void setColor(){
+  redColor = random(0, 255);
+  greenColor = random(0,255);
+  blueColor = random(0, 255);
+}
