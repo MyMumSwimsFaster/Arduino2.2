@@ -1,0 +1,93 @@
+int sensorValue = 0;
+
+void setup()
+{
+  pinMode(13, OUTPUT);
+  pinMode(A0, INPUT);
+  pinMode(0, OUTPUT);
+  pinMode(1, OUTPUT);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+}
+
+void loop()
+{
+  digitalWrite(13, HIGH);
+  delay(1000); // Wait for 1000 millisecond(s)
+  digitalWrite(13, LOW);
+  delay(1000); // Wait for 1000 millisecond(s)
+  
+  
+  // read the input on analog pin 0:
+  sensorValue = analogRead(A0);
+  delay(10); // Delay a little bit to improve simulation performance
+  
+  
+  //check sensor value, the higher the more lights turn on
+  if(sensorValue > 100){
+  	digitalWrite(0, HIGH); 
+  } else {
+   	digitalWrite(0, LOW); 
+  }
+  if(sensorValue > 200){
+  	digitalWrite(1, HIGH); 
+  } else {
+   	digitalWrite(1, LOW); 
+  }
+  if(sensorValue > 300){
+  	digitalWrite(2, HIGH); 
+  } else {
+   	digitalWrite(2, LOW); 
+  }
+  if(sensorValue > 400){
+  	digitalWrite(3, HIGH); 
+  } else {
+   	digitalWrite(3, LOW); 
+  }
+  if(sensorValue > 500){
+  	digitalWrite(4, HIGH); 
+  } else {
+   	digitalWrite(4, LOW); 
+  }
+  if(sensorValue > 600){
+  	digitalWrite(5, HIGH); 
+  } else {
+   	digitalWrite(5, LOW); 
+  }
+  if(sensorValue > 700){
+  	digitalWrite(6, HIGH); 
+  } else {
+   	digitalWrite(6, LOW); 
+  }
+  if(sensorValue > 800){
+  	digitalWrite(7, HIGH); 
+  } else {
+   	digitalWrite(7, LOW); 
+  }
+  if(sensorValue > 900){
+  	digitalWrite(8, HIGH); 
+  } else {
+   	digitalWrite(8, LOW); 
+  }
+  if(sensorValue > 1000){
+  	digitalWrite(9, HIGH); 
+  } else {
+   	digitalWrite(9, LOW); 
+  }
+  if(sensorValue > 1020){
+  	digitalWrite(10, HIGH); 
+  } else {
+   	digitalWrite(10, LOW); 
+  }
+  
+}
+
+
+
