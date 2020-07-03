@@ -1,0 +1,80 @@
+// include the library code:
+#include <LiquidCrystal.h>
+
+ 
+
+// initialize the library with the numbers of the interface pins
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+ 
+int state = 0;
+int zahlerS = 00;
+int zahlerM = 00; 
+int zahlerH = 00;
+int volatile pin6 = 6;
+int volatile pin7 = 7;
+int volatile pin8 = 8;
+int volatile pin9 = 9;
+int volatile pin10 = 10;
+int volatile pin13 = 13;
+
+void setup() {
+  Serial.begin(9600);
+  // set up the LCD's number of columns and rows:
+  lcd.begin(16, 2);
+  // Print a message to the LCD.
+  lcd.print(" ");
+  lcd.setCursor(0, 1);
+  pinMode(pin6, OUTPUT);
+  pinMode(pin7, INPUT);
+  pinMode(pin8, OUTPUT);
+  pinMode(pin9, OUTPUT);
+  pinMode(pin10, OUTPUT);
+  pinMode(pin13, OUTPUT);
+}
+
+void loop(){
+ lcd.setCursor(0, 0);
+ lcd.print(String(zahlerH)+":"+String(zahlerM)+ ":" + String(zahlerS));
+
+  if (zahlerS < 60){
+  zahlerS++;
+  delay(100);
+
+} else if (zahlerS == 60){
+    zahlerS = 0;
+    lcd.clear();  
+    zahlerM++;
+
+  } else if (zahlerM == 60){
+        zahlerM = 0;
+        zahlerH++;
+
+  }
+  if (zahlerS == 10){
+  digitalWrite(pin6, HIGH);
+  }
+  if (zahlerS == 20){
+  digitalWrite(pin8, HIGH);
+  }
+  if (zahlerS == 30){
+  digitalWrite(pin9, HIGH);
+  }
+  if (zahlerS == 40){
+  digitalWrite(pin10, HIGH);
+  }
+  if (zahlerS == 50){
+  digitalWrite(pin13, HIGH);
+  }
+  if (zahlerS == 60){
+  pinsLOW();
+  }
+}
+  //call all pins in 1 variable
+  void pinsLOW(){
+    digitalWrite(pin6, LOW);
+    digitalWrite(pin8, LOW);
+    digitalWrite(pin9, LOW);
+    digitalWrite(pin10, LOW);
+    digitalWrite(pin13, LOW);
+  }
